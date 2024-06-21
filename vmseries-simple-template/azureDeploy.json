@@ -105,6 +105,17 @@
 		    },
 		    "defaultValue": "https://raw.githubusercontent.com/saurabhtrekker/UI1/master"
 	    },
+        "virtualNetworkNewOrExisting" : {
+            "type": "string",
+            "defaultValue" : "new",
+            "allowedValues" : [
+                "new",
+                "existing"
+            ],
+            "metadata": {
+                "Description": "Indicates whether Virtual Network is new or existing"
+            }
+        },
         "virtualNetworkName": {
             "type": "string",
             "metadata": {
@@ -123,21 +134,21 @@
             "type": "string",
             "defaultValue": "Mgmt",
             "metadata": {
-                "description": "Subnet for the Mgmt"
+                "description": "Subnet for the Mgmt - Only used for New Virtual Network"
             }
         },
         "subnet1Name": {
             "type": "string",
             "defaultValue": "Untrust",
             "metadata": {
-                "description": "Subnet for the Untrust"
+                "description": "Subnet for the Untrust - Only used for New Virtual Network"
             }
         },
         "subnet2Name": {
             "type": "string",
             "defaultValue": "Trust",
             "metadata": {
-                "description": "Subnet for the Trust"
+                "description": "Subnet for the Trust - Only used for New Virtual Network"
             }
         },
         "subnet0Prefix": {
@@ -193,11 +204,15 @@
         "FWPrivateIPAddressUntrust": "[parameters('subnet1StartAddress')]",
         "FWPrivateIPAddressTrust": "[parameters('subnet2StartAddress')]",
         "publicIPAddressType": "Dynamic",
-        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+
+        "vnetID": {
+            "new": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+            "existing": "[resourceId(parameters('virtualNetworkResourceGroup'),'Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]"
+        },
         "nsgname-mgmt": "[concat(parameters('vmName'), '-DefaultNSG')]",
-        "subnet0Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet0Name'))]",
-        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
-        "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet2Name'))]",
+        "subnet0Ref": "[concat(variables('vnetID')[parameters('virtualNetworkNewOrExisting')],'/subnets/',parameters('subnet0Name'))]",
+        "subnet1Ref": "[concat(variables('vnetID')[parameters('virtualNetworkNewOrExisting')],'/subnets/',parameters('subnet1Name'))]",
+        "subnet2Ref": "[concat(variables('vnetID')[parameters('virtualNetworkNewOrExisting')],'/subnets/',parameters('subnet2Name'))]",
 	    "storageAccountSetupURL" : "[concat(parameters('baseUrl'),'/storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
 	    "vmTemplateUrl": "[concat(parameters('baseUrl'), '/virtual-machine-', parameters('authenticationType'),'.json')]"
     },
@@ -291,6 +306,7 @@
                 ]
             }
         }, {
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
             "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
