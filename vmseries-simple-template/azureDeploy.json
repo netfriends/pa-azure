@@ -116,6 +116,12 @@
                 "Description": "Indicates whether Virtual Network is new or existing"
             }
         },
+        "virtualNetworkResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource group of the VNet"
+            }
+        },
         "virtualNetworkName": {
             "type": "string",
             "metadata": {
