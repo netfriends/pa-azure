@@ -204,7 +204,8 @@
         "apiVersion": "2015-06-15",
         "imagePublisher": "paloaltonetworks",
     	"imageSku" : "byol",
-	    "imageOffer" : "vmseries1",
+    	"imageOffer" : "vmseries1",
+    	"imageVersion":   "latest"
         "fwpublicIPName": "[concat(parameters('vmName'), '-fwMgmtPublicIP')]",
         "nicName": "[concat(parameters('vmName'), '-eth')]",
         "FWPrivateIPAddressUntrust": "[parameters('subnet1StartAddress')]",
