@@ -4,9 +4,7 @@
     "parameters": {
         "location": {
             "type": "string",
-            "metadata": {
-                "description": "region of resources"
-            }
+            "defaultValue": "[resourceGroup().location]"
         },
         "newStorageAccount": {
             "type": "string",
