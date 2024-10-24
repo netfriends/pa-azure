@@ -103,7 +103,7 @@
 		    "metadata": {
 			    "artifactsBaseUrl": ""
 		    },
-		    "defaultValue": "https://raw.githubusercontent.com/saurabhtrekker/UI1/master"
+		    "defaultValue": "https://raw.githubusercontent.com/netfriends/pa-azure/master/vmseries-simple-template"
 	    },
         "virtualNetworkNewOrExisting" : {
             "type": "string",
